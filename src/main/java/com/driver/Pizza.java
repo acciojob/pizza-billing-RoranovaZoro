@@ -2,51 +2,53 @@ package com.driver;
 
 public class Pizza {
 
-    private int price;
+    private int basePrice;
     private Boolean isVeg;
     private Boolean extraCheeseAdded;
     private Boolean extraToppingsAdded;
     private Boolean paperBagAdded;
-    private String bill;
 
-    public Pizza(Boolean isVeg){
+    public Pizza(Boolean isVeg) {
         this.isVeg = isVeg;
-        this.price = isVeg ? 300 : 400;
+        this.basePrice = isVeg ? 300 : 400;
         this.extraCheeseAdded = false;
         this.extraToppingsAdded = false;
         this.paperBagAdded = false;
-        this.bill = "";
     }
 
-    public int getPrice(){
-        return this.price;
-    }
+    public int getPrice() {
+        int totalPrice = basePrice;
 
-    public void addExtraCheese(){
-        if (!extraCheeseAdded) {
-            this.price += 80;
-            this.extraCheeseAdded = true;
+        if (extraCheeseAdded) {
+            totalPrice += 80;
         }
-    }
 
-    public void addExtraToppings(){
-        if (!extraToppingsAdded) {
-            int toppingsPrice = isVeg ? 70 : 120;
-            this.price += toppingsPrice;
-            this.extraToppingsAdded = true;
+        if (extraToppingsAdded) {
+            totalPrice += isVeg ? 70 : 120;
         }
-    }
 
-    public void addTakeaway(){
-        if (!paperBagAdded) {
-            this.price += 20;
-            this.paperBagAdded = true;
+        if (paperBagAdded) {
+            totalPrice += 20;
         }
+
+        return totalPrice;
     }
 
-    public String getBill(){
+    public void addExtraCheese() {
+        extraCheeseAdded = true;
+    }
+
+    public void addExtraToppings() {
+        extraToppingsAdded = true;
+    }
+
+    public void addTakeaway() {
+        paperBagAdded = true;
+    }
+
+    public String getBill() {
         StringBuilder billBuilder = new StringBuilder();
-        billBuilder.append("Base Price Of The Pizza: ").append(this.price).append("\n");
+        billBuilder.append("Base Price Of The Pizza: ").append(basePrice).append("\n");
 
         if (extraCheeseAdded) {
             billBuilder.append("Extra Cheese Added: 80\n");
@@ -60,8 +62,7 @@ public class Pizza {
             billBuilder.append("Paperbag Added: 20\n");
         }
 
-        billBuilder.append("Total Price: ").append(this.price);
-        this.bill = billBuilder.toString();
-        return this.bill;
+        billBuilder.append("Total Price: ").append(getPrice());
+        return billBuilder.toString();
     }
 }
